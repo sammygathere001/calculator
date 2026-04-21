@@ -11,6 +11,24 @@ keys.addEventListener("click", (e) => {
   const displayedNum = display.textContent;
   const previousKeyType = calculator.dataset.previousKeyType;
 
+  // KEEP ONLY ONE calculate FUNCTION
+  const calculate = (n1, operator, n2) => {
+    const num1 = parseFloat(n1);
+    const num2 = parseFloat(n2);
+    let result = "";
+
+    if (operator === "add") {
+      result = num1 + num2;
+    } else if (operator === "subtract") {
+      result = num1 - num2;
+    } else if (operator === "multiply") {
+      result = num1 * num2;
+    } else if (operator === "divide") {
+      result = num1 / num2;
+    }
+    return result.toString();
+  };
+
   // Remove depressed state
   Array.from(key.parentNode.children).forEach((k) =>
     k.classList.remove("is-depressed"),
@@ -73,20 +91,9 @@ keys.addEventListener("click", (e) => {
     const operator = calculator.dataset.operator;
     const secondValue = displayedNum;
 
-    if (firstValue && operator) {
-      const calculate = (n1, op, n2) => {
-        const a = parseFloat(n1);
-        const b = parseFloat(n2);
+    display.textContent = calculate(firstValue, operator, secondValue);
 
-        if (op === "add") return a + b;
-        if (op === "subtract") return a - b;
-        if (op === "multiply") return a * b;
-        if (op === "divide") return a / b;
-      };
-
-      display.textContent = calculate(firstValue, operator, secondValue);
-    }
-
+    // FIX: moved here
     calculator.dataset.previousKeyType = "calculate";
   }
 });
